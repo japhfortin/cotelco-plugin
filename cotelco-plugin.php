@@ -26,6 +26,8 @@ define('CP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 // on install
 register_activation_hook( __FILE__, 'cot_create_tables' );
 
+wp_enqueue_style( 'cp-shortcodes',  CP_PLUGIN_URL . "css/shortcodes.css");
+
 global $cot_db_version;
 $cot_db_version = '1.0';
 

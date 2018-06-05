@@ -5,8 +5,6 @@ function cotelco_registration_form() {
     wp_enqueue_script( 'jquery-ui-datepicker' );
     wp_enqueue_script( 'jquery-mask', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js', array(), '1.0.0', true );
     wp_enqueue_script( 'cp-shortcodes', CP_PLUGIN_URL . 'js/shortcodes.js', array(), '1.0.0', true );
-
-    wp_enqueue_style( 'cp-shortcodes',  CP_PLUGIN_URL . "css/shortcodes.css");
     wp_enqueue_style( 'jquery-ui-datepicker', 'http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
 
     ob_start();
@@ -121,7 +119,7 @@ function cotelco_registration_form() {
             wp_new_user_notification($new_user_id);
    			?>
    			<div class="alert alert-success">
-				<strong>Thank you!</strong> You can now log in to our website. You will receive an email regarding your login information shortly.
+				<strong>Thank you!</strong> You can now <a href="/login">login</a> to our website. You will receive an email regarding your login information shortly.
 			</div>
    			<?php
    			// clear post array
