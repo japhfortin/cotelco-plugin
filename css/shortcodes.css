@@ -1,0 +1,83 @@
+/*REGISTRATION*/
+#cotelco_signup_form {
+}
+
+.ui-datepicker-calendar-hidden .ui-datepicker-calendar {
+    display: none;
+}
+
+.form-cotelco .form-group {
+    margin-bottom: 10px;
+}
+
+.form-cotelco .form-group .form-control {
+    padding: 10px;
+    border-radius: 4px;
+    width: calc(100% - 168px);
+}
+
+.form-cotelco .form-group.error .form-control {
+    border-color: #dc3545;
+}
+
+.form-cotelco .form-group > label {
+    min-width: 150px;
+    display: inline-block;
+    text-align: right;
+    margin-right: 15px;
+}
+
+#loginform .form-group > label,
+#loginform .form-group .form-control {
+    display: block;
+    width: 100%;
+}
+
+#loginform {
+    width: 450px;
+    max-width: 95%;
+    margin: auto;
+}
+
+.alert {
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+.alert ul {
+    padding-bottom: 0 !important;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+/*consumer bill*/
+table.table-cotelco {
+    margin-bottom: 2em;
+    border: 1px solid #d4d4d4;
+}
+
+table.table-cotelco thead th {
+    background: #febe1b;
+    border: 1px solid #febe1b;
+    color: #000;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+table.table-cotelco tbody tr td, 
+table.table-cotelco tbody tr th {
+    border-bottom: 1px solid #d4d4d4;
+}
