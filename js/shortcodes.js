@@ -3,10 +3,10 @@ jQuery(document).ready(function($) {
     $("#payment_date").datepicker({
         changeMonth: true,
         changeYear: true,
-        dateFormat: 'mm/dd/yy',
+        dateFormat: 'yy-mm-dd',
     });
     $('#billing_month').datepicker({
-        dateFormat: "yy/mm",
+        dateFormat: "yy-mm",
         changeMonth: true,
         changeYear: true,
         closeText: "Select",
@@ -36,8 +36,8 @@ jQuery(document).ready(function($) {
 
     // mask
     $('#account_no').mask('00-0000-0000');
-    $('#billing_month').mask('0000/00');
-    $('#payment_date').mask('00/00/0000');
+    $('#billing_month').mask('0000-00');
+    $('#payment_date').mask('0000-00-00');
     $('#payment_or').mask('00000000');
 
 });

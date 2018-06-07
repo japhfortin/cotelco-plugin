@@ -21,6 +21,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with {Cotelco Plugin}. If not, see {License URI}.
 */
+defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 define('CP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 
 // on install
@@ -57,9 +58,10 @@ function cot_create_tables() {
 		`date` DATE NOT NULL , 
 		`reference` VARCHAR(100) NOT NULL , 
 		`kwhused` INT(10) NOT NULL DEFAULT '0' , 
-		`debit` VARCHAR(20) NOT NULL DEFAULT '0' , 
-		`credit` VARCHAR(20) NOT NULL DEFAULT '0' , 
-		`balance` VARCHAR(20) NOT NULL DEFAULT '0' ,
+		`debit` DECIMAL(13,2) NOT NULL DEFAULT '0' , 
+		`credit` DECIMAL(13,2) NOT NULL DEFAULT '0' , 
+		`balance` DECIMAL(13,2) NOT NULL DEFAULT '0' ,
+		UNIQUE (`reference`),
 		FOREIGN KEY (`account_no`) REFERENCES $tbl_accounts(`account_no`)) $charset_collate;";
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 

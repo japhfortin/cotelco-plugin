@@ -1,4 +1,5 @@
 <?php 
+defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 // registration form
 function cotelco_registration_form() {
     // wp core registered scripts
@@ -14,7 +15,7 @@ function cotelco_registration_form() {
 	   
 	    $errors = array();  
         // Check username is present and not already in use  
-        $username = sanitize_text_field($_REQUEST['username']);  
+        /*$username = sanitize_text_field($_REQUEST['username']);  
         if ( strpos($username, ' ') !== false ) {
             $errors['username'] = "Sorry, no spaces allowed in usernames";  
         }  
@@ -22,9 +23,9 @@ function cotelco_registration_form() {
             $errors['username'] = "Please enter a username";  
         } elseif( username_exists( $username ) ) {  
             $errors['username'] = "Username already exists, please try another";  
-        }  
+        }  */
    
-        // Check email address is present and valid  
+        // Check if email address is present and valid  
         $email = sanitize_email($_REQUEST['email']); 
         if( !is_email( $email ) ) {   
             $errors['email'] = "Please enter a valid email";  
@@ -32,17 +33,17 @@ function cotelco_registration_form() {
             $errors['email'] = "This email address is already in use";  
         }
    
-        // Check password is valid  
+        // Check if password is valid  
         if(0 === preg_match("/.{8,}/", $_POST['password'])) {  
           $errors['password'] = "Password must be at least eight characters";  
         }  
    
-        // Check password confirmation_matches  
+        // Check if password confirmation matches  
         if(0 !== strcmp($_POST['password'], $_POST['password_confirmation'])) {  
           $errors['password_confirmation'] = "Passwords do not match";  
         }
 
-        // check if account no valid
+        // check if account is valid
         $account_no = sanitize_text_field($_POST['account_no']);
         if(empty($account_no))  {   
             $errors['account_no'] = "Please enter your account number";  
@@ -63,19 +64,35 @@ function cotelco_registration_form() {
         }
 
         $tbl_ledger = $wpdb->prefix . 'cotelco_ledger';
-		$query = $wpdb->prepare("SELECT account_no, date, reference, kwhused, debit, credit, balance FROM $tbl_ledger WHERE account_no = %s ORDER BY date DESC LIMIT 1", $account_no);
-		$c_latest_account = $wpdb->get_row($query);
 
-		$date_input = strtotime($billing_month . '/01 ');
-		$latest_date = strtotime($c_latest_account->date);
+        // query latest billing month
+		$query = $wpdb->prepare("SELECT  date FROM $tbl_ledger WHERE account_no = %s AND credit < 1 ORDER BY date DESC LIMIT 1", $account_no);
+		$c_latest_billing = $wpdb->get_row($query);
 
+		// add 1 to billing month input
+		$date_input = strtotime($billing_month . '-01');
+
+		// get billing month from query
+		$latest_date = strtotime($c_latest_billing->date);
+
+		// compare if inputted billing month is the same to the db value
 		if (date('Y-m', $date_input) != date('Y-m', $latest_date)) {
 			$errors['billing_month'] = "Please enter your latest billing month";  
 		}
 
-   		// check billing month
-        if(empty(sanitize_text_field($_POST['payment_date'])))  {   
+       	// check payment date
+       	$payment_date = sanitize_text_field($_POST['payment_date']);
+        if(empty($payment_date))  {   
             $errors['payment_date'] = "Please enter your payment date";  
+        }
+
+        // get date and reference for latest payment date and its o.r
+       	$query = $wpdb->prepare("SELECT date, reference FROM $tbl_ledger WHERE account_no = %s AND credit > 1 ORDER BY date DESC LIMIT 1", $account_no);
+		$c_latest_payment = $wpdb->get_row($query);
+
+		// check if inputted payment date is equal to the db value
+		if ($payment_date != $c_latest_payment->date) {
+        	$errors['payment_or'] = "Please enter your latest payment date";  
         }
 
         // check latest payment or
@@ -84,7 +101,7 @@ function cotelco_registration_form() {
             $errors['payment_or'] = "Please enter your payment official receipt";  
         }
 
-        if ($payment_or != $c_latest_account->reference) {
+        if ($payment_or != $c_latest_payment->reference) {
         	$errors['payment_or'] = "Please enter your latest payment official receipt";  
         }
 
@@ -93,6 +110,7 @@ function cotelco_registration_form() {
             $errors['terms'] = "You must agree to Terms of Service";  
         } 
         
+        // if 0 error add the user
         if(0 === count($errors)) {  
             $password = $_POST['password'];  
    			$fname = sanitize_text_field($_POST['first_name']);
@@ -100,7 +118,7 @@ function cotelco_registration_form() {
             // $new_user_id = wp_create_user( $username, $password, $email );
             $new_user_id = wp_insert_user(
 				array(
-					'user_login'	=>	$username,
+					'user_login'	=>	$email,
 					'user_pass'	=>	$password,
 					'first_name'	=>	$fname,
 					'last_name'	=>	$lname,
@@ -144,10 +162,10 @@ function cotelco_registration_form() {
 ?>  
 	<form id="cotelco_signup_form" class="form-cotelco" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 		<h3>Personal Information</h3>
-		<div class="form-group <?php echo (!empty($errors['username'])) ? 'error' : '' ?>">
+		<!-- <div class="form-group <?php echo (!empty($errors['username'])) ? 'error' : '' ?>">
 			<label for="username">Username</label>  
 			<input class="form-control" type="text" name="username" id="username" value="<?php echo @$_POST['username']?>">
-		</div>
+		</div> -->
 		<div class="form-group <?php echo (!empty($errors['email'])) ? 'error' : '' ?>">
 			<label for="email">Email address</label>  
 			<input class="form-control" type="text" name="email" id="email" value="<?php echo @$_POST['email']?>">  
@@ -179,7 +197,7 @@ function cotelco_registration_form() {
 		</div>
 		<div class="form-group <?php echo (!empty($errors['payment_date'])) ? 'error' : '' ?>">
 			<label for="payment_date">Payment Date</label>  
-			<input class="form-control" type="text" placeholder="mm/dd/yyyy" name="payment_date" id="payment_date" value="<?php echo @$_POST['payment_date']?>">  
+			<input class="form-control" type="text" placeholder="yyyy/mm/dd" name="payment_date" id="payment_date" value="<?php echo @$_POST['payment_date']?>">  
 		</div>
 		<div class="form-group <?php echo (!empty($errors['payment_or'])) ? 'error' : '' ?>">
 			<label for="payment_or">Payment OR</label>  
@@ -245,7 +263,7 @@ function cotelco_consumer_bill_table() {
 	$c_accounts = $wpdb->get_row($query);
 
 
-	$query = $wpdb->prepare("SELECT * FROM $tbl_ledger WHERE account_no = %s", $c_acc_no);
+	$query = $wpdb->prepare("SELECT * FROM $tbl_ledger WHERE account_no = %s ORDER BY date DESC", $c_acc_no);
 	$c_account_ledger = $wpdb->get_results($query);
 	// get account ledger
 	ob_start();

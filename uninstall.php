@@ -14,4 +14,5 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 // drop a custom database table
 global $wpdb;
 $table_name = $wpdb->prefix . 'cotelco_accounts';
-$wpdb->query("DROP TABLE IF EXISTS $table_name");
+$tbl_ledger = $wpdb->prefix . 'cotelco_ledger';
+$wpdb->query("DROP TABLE IF EXISTS $table_name;DROP TABLE IF EXISTS $tbl_ledger;");

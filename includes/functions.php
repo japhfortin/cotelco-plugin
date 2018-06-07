@@ -1,5 +1,5 @@
 <?php
-
+defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 function cotelco_account_found($acc_no) {
 	global $wpdb;
