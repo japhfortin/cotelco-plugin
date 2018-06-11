@@ -15,4 +15,5 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 global $wpdb;
 $table_name = $wpdb->prefix . 'cotelco_accounts';
 $tbl_ledger = $wpdb->prefix . 'cotelco_ledger';
-$wpdb->query("DROP TABLE IF EXISTS $table_name;DROP TABLE IF EXISTS $tbl_ledger;");
+$wpdb->query("DROP TABLE IF EXISTS $table_name");
+$wpdb->query("DROP TABLE IF EXISTS $tbl_ledger");

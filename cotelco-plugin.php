@@ -27,9 +27,12 @@ define('CP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 // on install
 register_activation_hook( __FILE__, 'cot_create_tables' );
 
-wp_enqueue_style( 'cp-shortcodes',  CP_PLUGIN_URL . "css/shortcodes.css");
+function cotelco_plugin_css() {
+	wp_enqueue_style( 'cp-shortcodes',  CP_PLUGIN_URL . "css/shortcodes.css");
+}
+add_action( 'wp_enqueue_scripts', 'cotelco_plugin_css', 999 );
 
-global $cot_db_version;
+global $cot_db_version;	
 $cot_db_version = '1.0';
 
 function cot_create_tables() {
@@ -61,7 +64,6 @@ function cot_create_tables() {
 		`debit` DECIMAL(13,2) NOT NULL DEFAULT '0' , 
 		`credit` DECIMAL(13,2) NOT NULL DEFAULT '0' , 
 		`balance` DECIMAL(13,2) NOT NULL DEFAULT '0' ,
-		UNIQUE (`reference`),
 		FOREIGN KEY (`account_no`) REFERENCES $tbl_accounts(`account_no`)) $charset_collate;";
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 

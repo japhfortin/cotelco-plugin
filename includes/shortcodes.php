@@ -87,7 +87,7 @@ function cotelco_registration_form() {
         }
 
         // get date and reference for latest payment date and its o.r
-       	$query = $wpdb->prepare("SELECT date, reference FROM $tbl_ledger WHERE account_no = %s AND credit > 1 ORDER BY date DESC LIMIT 1", $account_no);
+       	$query = $wpdb->prepare("SELECT date, reference FROM $tbl_ledger WHERE account_no = %s AND credit > 0 ORDER BY date DESC LIMIT 1", $account_no);
 		$c_latest_payment = $wpdb->get_row($query);
 
 		// check if inputted payment date is equal to the db value
