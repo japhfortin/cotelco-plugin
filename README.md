@@ -1,5 +1,4 @@
 # Cotelco Plugin
-One Paragraph of project description goes here
 
 Name: Cotelco Plugin
 Description: Additional codes for cotelco website
