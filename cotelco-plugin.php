@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Cotelco Plugin
-Plugin URI:  #
+Plugin URI:  https://github.com/japhfortin/cotelco-plugin
 Description: Additional codes for cotelco website
 Version:     1.0
 Author:      Japh Fortin
