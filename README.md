@@ -15,6 +15,8 @@ We created a plugin that stores the code for additional WordPress shortcodes, an
     * billing month: Should correspond to latest billing month in the database
     * payment date: Should correspond to latest payment date in the database
     * payment OR: Should correspond to latest payment OR in the database
+* [cotelco_login] – Creates a login form where user can login.
+* [cotelco_bill] – Creates a table in which user can view his account and ledger.
 
 ### The Tables:
 * Accounts - this table will have the following fields:
