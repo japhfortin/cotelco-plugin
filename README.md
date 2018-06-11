@@ -1,8 +1,8 @@
 # Cotelco Plugin
 
-Name: Cotelco Plugin
-Description: Additional codes for cotelco website
-Plugin URI: https://github.com/japhfortin/cotelco-plugin
+*	Name: Cotelco Plugin
+*	Description: Additional codes for cotelco website
+*	Plugin URI: https://github.com/japhfortin/cotelco-plugin
 
 We created a plugin that stores the code for additional WordPress shortcodes, and codes to create additional tables for us to store the cotelco user accounts and ledgers.
 
