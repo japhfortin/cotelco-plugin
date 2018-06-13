@@ -214,13 +214,18 @@ function cotelco_registration_form() {
   <?php
     return ob_get_clean();
 }
-add_shortcode('cotelco_register', 'cotelco_registration_form');
+add_shortcode('cotelco_register', 'cotelco_registration_form'); 
+
+add_action( 'template_redirect', 'cotelco_redirect_login' );
+
+function cotelco_redirect_login() {
+    if( is_user_logged_in() && is_page( 'login' ) ) {
+        wp_redirect( site_url('/consumer-bill') );
+        exit();
+    }
+}
 
 function cotelco_login_form() {
-	if ( is_user_logged_in() ) {
-		return;
-	}
-	
 	ob_start();
 	?>
 	<form name="loginform" id="loginform" class="form-cotelco" action="/wp-login.php" method="post">
@@ -258,16 +263,17 @@ function cotelco_consumer_bill_table() {
 	$tbl_ledger = $wpdb->prefix . 'cotelco_ledger';
 	
 	// get account info
-	$c_acc_no = get_usermeta( get_current_user_id(), $meta_key = 'cotelco_account_no' );
-	$query = $wpdb->prepare("SELECT * FROM $tbl_accounts WHERE account_no = %s", $c_acc_no);
-	$c_accounts = $wpdb->get_row($query);
+	$c_acc_no = get_user_meta( get_current_user_id(), $meta_key = 'cotelco_account_no' );
 
-
-	$query = $wpdb->prepare("SELECT * FROM $tbl_ledger WHERE account_no = %s ORDER BY date DESC", $c_acc_no);
-	$c_account_ledger = $wpdb->get_results($query);
 	// get account ledger
 	ob_start();
 	if (is_user_logged_in() && !empty($c_acc_no)) {
+		$query = $wpdb->prepare("SELECT * FROM $tbl_accounts WHERE account_no = %s", $c_acc_no);
+		$c_accounts = $wpdb->get_row($query);
+
+
+		$query = $wpdb->prepare("SELECT * FROM $tbl_ledger WHERE account_no = %s ORDER BY date DESC", $c_acc_no);
+		$c_account_ledger = $wpdb->get_results($query);
 		?>
 		<table class="table-cotelco">
 			<thead>
@@ -334,7 +340,9 @@ function cotelco_consumer_bill_table() {
 		<?php endif ?>
 		<?php
 	} else {
-		echo "Please login or register to view consumer bill.";
+		?>
+			Please <a href="<?php echo home_url( '/login' ) ?>">login</a> or <a href="<?php echo home_url( '/register' ) ?>">register</a> to view consumer bill
+		<?php
 	}
 	return ob_get_clean();
 }
